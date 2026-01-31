@@ -1,0 +1,34 @@
+name: Deploy to Hugging Face Spaces
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Push to Hugging Face Spaces
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}  # Set as: username/space-name
+        run: |
+          # Configure git
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+          
+          # Add HF Spaces as remote
+          git remote add hf https://huggingface:$HF_TOKEN@huggingface.co/spaces/$HF_SPACE
+          
+          # Push to HF Spaces
+          git push hf main --force
+          
+          echo "✅ Deployed to https://huggingface.co/spaces/$HF_SPACE"
