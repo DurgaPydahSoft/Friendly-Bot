@@ -27,6 +27,17 @@ app.add_middleware(
 app.include_router(chat_router)
 
 
+@app.get("/")
+async def root():
+    """API info - frontend is hosted separately."""
+    return {
+        "message": "EmbedBot API",
+        "docs": "/docs",
+        "health": "/health",
+        "chat": "POST /chat",
+    }
+
+
 @app.get("/health")
 async def health():
     """Health check for deployment probes."""
