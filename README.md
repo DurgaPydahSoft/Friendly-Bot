@@ -33,7 +33,21 @@ Click the green chat bubble in the bottom-right corner to start chatting!
 
 ## Embedding
 
-Embed this chatbot on your website:
+**Option A – Script (recommended):** One JS file, no iframe. Build and serve the widget, then load it on any site:
+
+1. In `frontend/`: run `npm run build:embed` → produces `dist/embed.js`.
+2. Host `embed.js` (e.g. from your frontend deploy or CDN).
+3. On the host site, add:
+   ```html
+   <script src="https://YOUR_URL/embed.js"></script>
+   <script>
+     EmbedBot.init({ apiUrl: 'https://YOUR_BACKEND_URL', title: 'Chat', position: 'bottom-right' });
+   </script>
+   ```
+
+See **`frontend/INTEGRATION.md`** for full options (`title`, `welcomeMessage`, `position`, `primaryColor`) and examples.
+
+**Option B – iframe:** Embed the demo app in an iframe:
 
 ```html
 <iframe

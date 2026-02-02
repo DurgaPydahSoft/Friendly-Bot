@@ -1,12 +1,24 @@
 /**
  * API client for EmbedBot backend.
- * Uses Vite proxy in dev (empty base) or VITE_API_URL in production.
+ * - Standalone app: uses VITE_API_URL (or dev proxy).
+ * - Embed: use setApiBase(url) before mounting; sendMessage uses that.
  */
+let apiBase = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL != null
+  ? import.meta.env.VITE_API_URL
+  : ''
 
-const API_BASE = import.meta.env.VITE_API_URL ?? ''
+export function setApiBase(base) {
+  apiBase = base == null ? '' : String(base).replace(/\/$/, '')
+}
+
+export function getApiBase() {
+  return apiBase
+}
 
 export async function sendMessage(message) {
-  const res = await fetch(`${API_BASE}/chat`, {
+  const base = apiBase
+  const url = base ? `${base}/chat` : '/chat'
+  const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message }),
