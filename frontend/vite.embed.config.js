@@ -10,6 +10,9 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
  */
 export default defineConfig({
   plugins: [react(), tailwindcss(), cssInjectedByJsPlugin()],
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production'),
+  },
   build: {
     lib: {
       entry: 'src/embed.jsx',
@@ -20,6 +23,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         inlineDynamicImports: true,
+        intro: "(function(){if(typeof process==='undefined'&&typeof window!=='undefined'){window.process={env:{NODE_ENV:'production'}};}})();",
       },
     },
     outDir: 'dist',

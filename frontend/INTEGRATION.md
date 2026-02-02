@@ -109,6 +109,8 @@ The script creates a floating chat button in the chosen corner. Clicking it open
 </script>
 ```
 
+**Important:** Put the embed script **before** the script that calls `EmbedBot.init()`, and do **not** use `async` or `defer` on the embed script so it runs and defines `EmbedBot` before your init runs. If you load the script dynamically, call `EmbedBot.init()` only in the script’s `onload` callback.
+
 ---
 
 ## 5. Backend requirements
